@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jour-webapi
+  namespace: mialkin
+  labels:
+    app: jour-webapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jour-webapi
+  template:
+    metadata:
+      namespace: mialkin
+      labels:
+        app: jour-webapi
+    spec:
+      containers:
+        - name: jour-webapi
+          image: gcr.io/helical-patrol-307414/jour.webapi:latest
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jour-webapi
+  namespace: mialkin
+spec:
+  selector:
+    app: jour-webapi
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
