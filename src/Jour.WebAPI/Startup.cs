@@ -24,6 +24,11 @@ namespace Jour.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder => { builder.WithOrigins("http://localhost:3000"); });
+            });
+
             services.AddControllers();
         }
 
@@ -37,6 +42,11 @@ namespace Jour.WebAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            if (env.IsDevelopment())
+            {
+                app.UseCors();
+            }
 
             app.UseAuthorization();
 
