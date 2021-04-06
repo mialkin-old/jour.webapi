@@ -1,14 +1,11 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Jour.WebAPI
@@ -24,9 +21,32 @@ namespace Jour.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+                    config =>
+                    {
+                        config.Cookie.Name = CookieAuthenticationDefaults.AuthenticationScheme;
+                        config.ExpireTimeSpan = TimeSpan.FromDays(30);
+                        config.Cookie.SameSite = SameSiteMode.None;
+                        config.Events.OnRedirectToLogin = context =>
+                        {
+                            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            return Task.FromResult<object>(null);
+                        }; // https://github.com/dotnet/aspnetcore/issues/9039#issuecomment-629617025
+                    }
+);
+
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(builder => { builder.WithOrigins("http://localhost:3000"); });
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder
+                    .WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
             });
 
             services.AddControllers();
@@ -48,6 +68,7 @@ namespace Jour.WebAPI
                 app.UseCors();
             }
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
