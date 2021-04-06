@@ -31,14 +31,17 @@ namespace Jour.WebAPI
                     {
                         config.Cookie.Name = CookieAuthenticationDefaults.AuthenticationScheme;
                         config.ExpireTimeSpan = TimeSpan.FromDays(30);
-                        config.Cookie.SameSite = SameSiteMode.None;
                         config.Events.OnRedirectToLogin = context =>
                         {
                             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                             return Task.FromResult<object>(null);
                         }; // https://github.com/dotnet/aspnetcore/issues/9039#issuecomment-629617025
-                    }
-);
+
+                        if (Env.IsDevelopment())
+                        {
+                            config.Cookie.SameSite = SameSiteMode.None;
+                        }
+                    });
 
             if (Env.IsDevelopment())
             {
