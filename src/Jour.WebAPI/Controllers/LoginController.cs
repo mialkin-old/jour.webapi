@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -35,7 +34,6 @@ namespace Jour.WebAPI.Controllers
             if (User.Identity.IsAuthenticated)
                 return Json(new { success = false, errorMessage = "You are already authenticated!" });
 
-
             if (model.Username != _loginSettings.Username || model.Password != _loginSettings.Password)
                 return Json(new { success = false, errorMessage = "Invalid credentials!" });
 
@@ -45,11 +43,8 @@ namespace Jour.WebAPI.Controllers
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), new AuthenticationProperties
-            {
-                IsPersistent = true
-
-            });
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity),
+                new AuthenticationProperties { IsPersistent = true });
 
             return Json(new { success = true });
         }
