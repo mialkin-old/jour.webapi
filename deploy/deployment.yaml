@@ -21,6 +21,17 @@ spec:
           image: gcr.io/helical-patrol-307414/jour.webapi:latest
           ports:
             - containerPort: 80
+          env:
+            - name: JOUR_Login__Username
+              valueFrom:
+                secretKeyRef:
+                  name: jour-secrets
+                  key: username
+            - name: JOUR_Login__Password
+              valueFrom:
+                secretKeyRef:
+                  name: jour-secrets
+                  key: password
 ---
 apiVersion: v1
 kind: Service
