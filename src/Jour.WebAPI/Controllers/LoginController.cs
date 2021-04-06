@@ -1,8 +1,10 @@
-﻿using Jour.WebAPI.ViewModels;
+﻿using Jour.WebAPI.Infrastructure;
+using Jour.WebAPI.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -13,21 +15,28 @@ namespace Jour.WebAPI.Controllers
     [Route("api/v1/[controller]")]
     public class LoginController : Controller
     {
+        private readonly LoginSettings _loginSettings;
+
+        public LoginController(IOptions<LoginSettings> loginSettings)
+        {
+            _loginSettings = loginSettings.Value;
+        }
+
         [Route("status")]
-        public async Task<IActionResult> Status()
+        public IActionResult Status()
         {
             return Ok(User.Identity.IsAuthenticated);
         }
 
         [Route("sign-in")]
         [HttpPost]
-        public async Task<IActionResult> SignIn([FromBody]SignInVm model)
+        public async Task<IActionResult> SignIn([FromBody] SignInVm model)
         {
             if (User.Identity.IsAuthenticated)
                 return Json(new { success = false, errorMessage = "You are already authenticated!" });
 
 
-            if (model.Username != "a" || model.Password != "a")
+            if (model.Username != _loginSettings.Username || model.Password != _loginSettings.Password)
                 return Json(new { success = false, errorMessage = "Invalid credentials!" });
 
             var claims = new List<Claim> {
@@ -38,9 +47,8 @@ namespace Jour.WebAPI.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), new AuthenticationProperties
             {
-                IsPersistent = true,
-                //ExpiresUtc = DateTime.UtcNow.AddYears(1),
-                
+                IsPersistent = true
+
             });
 
             return Json(new { success = true });
@@ -49,7 +57,7 @@ namespace Jour.WebAPI.Controllers
         [Route("sign-out")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> SignOut()
+        public async new Task<IActionResult> SignOut()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 

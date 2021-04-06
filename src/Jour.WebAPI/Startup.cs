@@ -1,3 +1,4 @@
+using Jour.WebAPI.Infrastructure;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,12 +13,14 @@ namespace Jour.WebAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Env = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Env { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -37,33 +40,38 @@ namespace Jour.WebAPI
                     }
 );
 
-            services.AddCors(options =>
+            if (Env.IsDevelopment())
             {
-                options.AddDefaultPolicy(builder =>
+                services.AddCors(options =>
                 {
-                    builder
-                    .WithOrigins("http://localhost:3000")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
+                    options.AddDefaultPolicy(builder =>
+                    {
+                        builder
+                        .WithOrigins("http://localhost:3000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                    });
                 });
-            });
+            }
 
             services.AddControllers();
+
+            services.AddCustomServices(Configuration);
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (Env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage(); // TODO Do I need this?
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            if (env.IsDevelopment())
+            if (Env.IsDevelopment())
             {
                 app.UseCors();
             }
