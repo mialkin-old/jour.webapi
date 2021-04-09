@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Jour.Database.Repositories;
+using Jour.Database.Repositories.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Jour.WebAPI.Infrastructure
@@ -11,6 +13,9 @@ namespace Jour.WebAPI.Infrastructure
                 .AddOptions<LoginSettings>()
                 .Bind(configuration.GetSection(LoginSettings.Login))
                 .ValidateDataAnnotations();
+
+            serviceCollection
+                .AddTransient<IExerciseKindsRepository, ExerciseKindsRepository>();
         }
     }
 }

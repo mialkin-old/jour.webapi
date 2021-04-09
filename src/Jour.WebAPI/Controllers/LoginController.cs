@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 namespace Jour.WebAPI.Controllers
 {
     [Route("api/v1/[controller]")]
+    [Authorize]
     public class LoginController : Controller
     {
         private readonly LoginSettings _loginSettings;
@@ -22,6 +23,7 @@ namespace Jour.WebAPI.Controllers
         }
 
         [Route("status")]
+        [AllowAnonymous]
         public IActionResult Status()
         {
             return Ok(User.Identity.IsAuthenticated);
@@ -29,6 +31,7 @@ namespace Jour.WebAPI.Controllers
 
         [Route("sign-in")]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> SignIn([FromBody] SignInVm model)
         {
             if (User.Identity.IsAuthenticated)
@@ -51,7 +54,6 @@ namespace Jour.WebAPI.Controllers
 
         [Route("sign-out")]
         [HttpPost]
-        [Authorize]
         public async new Task<IActionResult> SignOut()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
