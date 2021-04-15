@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Jour.Database.Dtos
 {
@@ -15,6 +16,7 @@ namespace Jour.Database.Dtos
         public string LastName { get; set; }
 
         [Required]
+        [Column(TypeName = "date")]
         public DateTime DateOfBirth { get; set; }
     }
 }
