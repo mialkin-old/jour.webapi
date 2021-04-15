@@ -52,10 +52,10 @@ namespace Jour.WebAPI
                     options.AddDefaultPolicy(builder =>
                     {
                         builder
-                        .WithOrigins("http://localhost:3000")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
+                            .WithOrigins("http://localhost:3000")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
                     });
                 });
             }
@@ -66,7 +66,8 @@ namespace Jour.WebAPI
 
             services.AddDbContext<JourContext>(options =>
                 options
-                    .UseNpgsql("Host=localhost;Database=jour;Username=postgres;Password=vpIKsULCBA")
+                    .UseNpgsql("Host=localhost;Database=jour;Username=postgres;Password=vpIKsULCBA",
+                        b => b.MigrationsAssembly("Jour.WebAPI"))
                     .UseSnakeCaseNamingConvention());
         }
 
@@ -89,10 +90,7 @@ namespace Jour.WebAPI
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
