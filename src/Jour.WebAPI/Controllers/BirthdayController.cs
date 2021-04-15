@@ -20,7 +20,7 @@ namespace Jour.WebAPI.Controllers
         {
             List<Birthday> context = _context.Birthdays.ToList();
             
-            return Json("Birthday");
+            return Json(context);
         }
     }
 }

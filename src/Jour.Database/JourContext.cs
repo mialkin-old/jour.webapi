@@ -7,7 +7,7 @@ namespace Jour.Database
     {
         public JourContext(DbContextOptions<JourContext> options) : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
         
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSnakeCaseNamingConvention();
