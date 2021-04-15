@@ -54,7 +54,7 @@ namespace Jour.WebAPI.Controllers
 
         [Route("sign-out")]
         [HttpPost]
-        public async new Task<IActionResult> SignOut()
+        public new async Task<IActionResult> SignOut()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 

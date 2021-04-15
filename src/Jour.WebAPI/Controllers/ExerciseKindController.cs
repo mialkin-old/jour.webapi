@@ -11,17 +11,17 @@ namespace Jour.WebAPI.Controllers
     [Authorize]
     public class ExerciseKindController : Controller
     {
-        private readonly IExerciseKindsRepository _exerciseKindsRepository;
+        private readonly IExerciseRepository _exerciseRepository;
 
-        public ExerciseKindController(IExerciseKindsRepository exerciseKindsRepository)
+        public ExerciseKindController(IExerciseRepository exerciseRepository)
         {
-            _exerciseKindsRepository = exerciseKindsRepository;
+            _exerciseRepository = exerciseRepository;
         }
 
         [Route("list")]
         public async Task<IActionResult> List()
         {
-            IEnumerable<ExerciseKindDto> list = await _exerciseKindsRepository.ListAsync();
+            IEnumerable<Exercise> list = await _exerciseRepository.ListAsync();
 
             return Json(list);
         }

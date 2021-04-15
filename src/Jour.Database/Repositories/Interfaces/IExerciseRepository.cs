@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace Jour.Database.Repositories.Interfaces
 {
-    public interface IExerciseKindsRepository
+    public interface IExerciseRepository
     {
-        Task<IEnumerable<ExerciseKindDto>> ListAsync();
+        Task<IEnumerable<Exercise>> ListAsync();
     }
 }

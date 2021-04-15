@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
+using Jour.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jour.WebAPI
 {
@@ -61,6 +63,11 @@ namespace Jour.WebAPI
             services.AddControllers();
 
             services.AddCustomServices(Configuration);
+
+            services.AddDbContext<JourContext>(options =>
+                options
+                    .UseNpgsql("Host=localhost;Database=jour;Username=postgres;Password=vpIKsULCBA")
+                    .UseSnakeCaseNamingConvention());
         }
 
         public void Configure(IApplicationBuilder app)

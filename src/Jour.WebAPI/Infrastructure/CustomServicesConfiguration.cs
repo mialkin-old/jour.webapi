@@ -15,7 +15,7 @@ namespace Jour.WebAPI.Infrastructure
                 .ValidateDataAnnotations();
 
             serviceCollection
-                .AddTransient<IExerciseKindsRepository, ExerciseKindsRepository>();
+                .AddTransient<IExerciseRepository, ExerciseRepository>();
         }
     }
 }
