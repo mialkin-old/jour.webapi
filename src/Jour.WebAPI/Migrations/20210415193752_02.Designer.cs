@@ -21,7 +21,7 @@ namespace Jour.WebAPI.Migrations
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("Jour.Database.Dtos.Birthday", b =>
+            modelBuilder.Entity("Jour.Db.Dtos.Birthday", b =>
                 {
                     b.Property<int>("BirthdayId")
                         .ValueGeneratedOnAdd()
@@ -49,7 +49,7 @@ namespace Jour.WebAPI.Migrations
                     b.ToTable("birthdays");
                 });
 
-            modelBuilder.Entity("Jour.Database.Dtos.Exercise", b =>
+            modelBuilder.Entity("Jour.Db.Dtos.Exercise", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

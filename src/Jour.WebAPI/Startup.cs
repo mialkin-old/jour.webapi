@@ -64,11 +64,7 @@ namespace Jour.WebAPI
 
             services.AddCustomServices(Configuration);
 
-            services.AddDbContext<JourContext>(options =>
-                options
-                    .UseNpgsql("Host=localhost;Database=jour;Username=postgres;Password=vpIKsULCBA",
-                        b => b.MigrationsAssembly("Jour.WebAPI"))
-                    .UseSnakeCaseNamingConvention());
+            services.AddDbContext<JourContext>();
         }
 
         public void Configure(IApplicationBuilder app)

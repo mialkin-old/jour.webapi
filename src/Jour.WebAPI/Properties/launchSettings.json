@@ -19,10 +19,13 @@
     },
     "Jour.WebAPI": {
       "commandName": "Project",
-      //"launchBrowser": true,
       "launchUrl": "api/v1/login/status",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "JOUR_Db__Host": "localhost",
+        "JOUR_Db__Database": "jour",
+        "JOUR_Db__Username": "postgres",
+        "JOUR_Db__Password": "vpIKsULCBA",
         "JOUR_Login__Username": "aleksei",
         "JOUR_Login__Password": "$3W7D]]Be73![/m-b4ErQYv?#3L;FB9bjZjT[8,AX9bpx"
       },
