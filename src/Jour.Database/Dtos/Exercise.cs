@@ -1,8 +1,13 @@
-﻿namespace Jour.Database.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Jour.Database.Dtos
 {
     public class Exercise
     {
-        public int Id { get; set; }
+        [Key]
+        public int ExerciseId { get; set; }
+        
+        [Required]
         public string Name { get; set; }
     }
 }

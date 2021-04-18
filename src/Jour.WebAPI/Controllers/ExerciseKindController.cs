@@ -1,9 +1,7 @@
-﻿using Jour.Database.Dtos;
-using Jour.Database.Repositories.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using Jour.Database;
 
 namespace Jour.WebAPI.Controllers
 {
@@ -11,19 +9,18 @@ namespace Jour.WebAPI.Controllers
     [Authorize]
     public class ExerciseKindController : Controller
     {
-        private readonly IExerciseRepository _exerciseRepository;
+        private readonly JourContext _context;
 
-        public ExerciseKindController(IExerciseRepository exerciseRepository)
+        public ExerciseKindController(JourContext context)
         {
-            _exerciseRepository = exerciseRepository;
+            _context = context;
         }
 
         [Route("list")]
         public async Task<IActionResult> List()
         {
-            IEnumerable<Exercise> list = await _exerciseRepository.ListAsync();
 
-            return Json(list);
+            return Json(null);
         }
     }
 }

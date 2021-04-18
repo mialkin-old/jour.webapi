@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Jour.Database.Dtos
 {
@@ -9,6 +11,9 @@ namespace Jour.Database.Dtos
         public int WorkoutId { get; set; }
 
         [Required]
+        [Column(TypeName = "date")]
         public DateTime WorkoutDate { get; set; }
+
+        public List<Exercise> Exercises { get; set; }
     }
 }

@@ -23,7 +23,10 @@ namespace Jour.Database
                            $"Password={_settings.Password}")
                 .UseSnakeCaseNamingConvention();
 
-        public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Birthday> Birthdays { get; set; }
-    }
+        public DbSet<Exercise> Exercises { get; set; }
+        public DbSet<Goal> Goals { get; set; }
+        public DbSet<Plan> Plans { get; set; }
+        public DbSet<Workout> Workouts { get; set; }
+    } 
 }
