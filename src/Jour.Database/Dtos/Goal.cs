@@ -13,8 +13,6 @@ namespace Jour.Database.Dtos
         [Required]
         public string Title { get; set; }
         
-        public string Description { get; set; }
-
         [Column(TypeName = "date")]
         public DateTime DateCreated { get; set; }
         

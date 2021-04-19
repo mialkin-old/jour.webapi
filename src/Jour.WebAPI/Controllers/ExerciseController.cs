@@ -7,11 +7,11 @@ namespace Jour.WebAPI.Controllers
 {
     [Route("api/v1/[controller]")]
     [Authorize]
-    public class ExerciseKindController : Controller
+    public class ExerciseController : Controller
     {
         private readonly JourContext _context;
 
-        public ExerciseKindController(JourContext context)
+        public ExerciseController(JourContext context)
         {
             _context = context;
         }
@@ -19,7 +19,6 @@ namespace Jour.WebAPI.Controllers
         [Route("list")]
         public async Task<IActionResult> List()
         {
-
             return Json(null);
         }
     }

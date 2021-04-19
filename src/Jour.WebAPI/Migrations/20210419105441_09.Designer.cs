@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Jour.WebAPI.Migrations
 {
     [DbContext(typeof(JourContext))]
-    [Migration("20210419092337_08")]
-    partial class _08
+    [Migration("20210419105441_09")]
+    partial class _09
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -81,15 +81,15 @@ namespace Jour.WebAPI.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<int?>("WorkoutId")
+                    b.Property<int?>("TrainingWorkoutId")
                         .HasColumnType("integer")
-                        .HasColumnName("workout_id");
+                        .HasColumnName("training_workout_id");
 
                     b.HasKey("ExerciseId")
                         .HasName("pk_exercises");
 
-                    b.HasIndex("WorkoutId")
-                        .HasDatabaseName("ix_exercises_workout_id");
+                    b.HasIndex("TrainingWorkoutId")
+                        .HasDatabaseName("ix_exercises_training_workout_id");
 
                     b.ToTable("exercises");
                 });
@@ -109,10 +109,6 @@ namespace Jour.WebAPI.Migrations
                     b.Property<DateTime?>("Deadline")
                         .HasColumnType("date")
                         .HasColumnName("deadline");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -192,9 +188,9 @@ namespace Jour.WebAPI.Migrations
                         .HasColumnName("workout_date");
 
                     b.HasKey("WorkoutId")
-                        .HasName("pk_workouts");
+                        .HasName("pk_training");
 
-                    b.ToTable("workouts");
+                    b.ToTable("training");
                 });
 
             modelBuilder.Entity("GoalTag", b =>
@@ -218,8 +214,8 @@ namespace Jour.WebAPI.Migrations
                 {
                     b.HasOne("Jour.Database.Dtos.Training", null)
                         .WithMany("Exercises")
-                        .HasForeignKey("WorkoutId")
-                        .HasConstraintName("fk_exercises_workouts_workout_id");
+                        .HasForeignKey("TrainingWorkoutId")
+                        .HasConstraintName("fk_exercises_training_training_workout_id");
                 });
 
             modelBuilder.Entity("Jour.Database.Dtos.Training", b =>

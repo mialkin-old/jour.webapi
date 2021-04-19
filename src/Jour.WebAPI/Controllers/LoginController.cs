@@ -35,21 +35,23 @@ namespace Jour.WebAPI.Controllers
         public async Task<IActionResult> SignIn([FromBody] SignInVm model)
         {
             if (User.Identity.IsAuthenticated)
-                return Json(new { success = false, errorMessage = "You are already authenticated!" });
+                return Json(new {success = false, errorMessage = "You are already authenticated!"});
 
             if (model.Username != _loginSettings.Username || model.Password != _loginSettings.Password)
-                return Json(new { success = false, errorMessage = "Invalid credentials!" });
+                return Json(new {success = false, errorMessage = "Invalid credentials!"});
 
-            var claims = new List<Claim> {
+            var claims = new List<Claim>
+            {
                 new Claim(ClaimTypes.Name, "admin")
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity),
-                new AuthenticationProperties { IsPersistent = true });
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                new AuthenticationProperties {IsPersistent = true});
 
-            return Json(new { success = true });
+            return Json(new {success = true});
         }
 
         [Route("sign-out")]

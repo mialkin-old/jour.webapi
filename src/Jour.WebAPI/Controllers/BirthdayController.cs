@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Jour.Database;
 using Jour.Database.Dtos;
+using Jour.WebAPI.Infrastructure;
 using Jour.WebAPI.ViewModels.Birthday;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jour.WebAPI.Controllers
 {
@@ -21,16 +24,12 @@ namespace Jour.WebAPI.Controllers
         }
 
         [Route("list")]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            List<Birthday> list = _context.Birthdays.ToList();
+            List<Birthday> list = await _context.Birthdays.ToListAsync();
 
-            string[] months = new[]
-            {
-                "n/a", "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь",
-                "Ноябрь", "Декабрь"
-            };
-
+            var months = new Months();
+            
             var result = list.Select(x => new BirthdayListVm
                 {
                     BirthdayId = x.BirthdayId,

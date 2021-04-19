@@ -174,7 +174,7 @@ namespace Jour.WebAPI.Migrations
                     b.ToTable("tags");
                 });
 
-            modelBuilder.Entity("Jour.Database.Dtos.Workout", b =>
+            modelBuilder.Entity("Jour.Database.Dtos.Training", b =>
                 {
                     b.Property<int>("WorkoutId")
                         .ValueGeneratedOnAdd()
@@ -211,13 +211,13 @@ namespace Jour.WebAPI.Migrations
 
             modelBuilder.Entity("Jour.Database.Dtos.Exercise", b =>
                 {
-                    b.HasOne("Jour.Database.Dtos.Workout", null)
+                    b.HasOne("Jour.Database.Dtos.Training", null)
                         .WithMany("Exercises")
                         .HasForeignKey("WorkoutId")
                         .HasConstraintName("fk_exercises_workouts_workout_id");
                 });
 
-            modelBuilder.Entity("Jour.Database.Dtos.Workout", b =>
+            modelBuilder.Entity("Jour.Database.Dtos.Training", b =>
                 {
                     b.Navigation("Exercises");
                 });

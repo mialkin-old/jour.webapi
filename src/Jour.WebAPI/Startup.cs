@@ -9,7 +9,6 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 using Jour.Database;
-using Microsoft.EntityFrameworkCore;
 
 namespace Jour.WebAPI
 {
@@ -21,8 +20,8 @@ namespace Jour.WebAPI
             Env = env;
         }
 
-        public IConfiguration Configuration { get; }
-        public IWebHostEnvironment Env { get; }
+        private IConfiguration Configuration { get; }
+        private IWebHostEnvironment Env { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
