@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,8 @@ namespace Jour.Database.Dtos
         public int TagId { get; set; }
         
         [Required]
-        public int Title { get; set; }
+        public string Title { get; set; }
+        
+        public ICollection<Goal> Goals { get; set; }
     }
 }

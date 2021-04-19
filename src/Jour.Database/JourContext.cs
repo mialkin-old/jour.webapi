@@ -8,25 +8,24 @@ namespace Jour.Database
     {
         private readonly DatabaseSettings _settings;
 
-        public JourContext(DbContextOptions<JourContext> options, IOptions<DatabaseSettings> settings) : base(options)
+        public JourContext(DbContextOptions<JourContext> options) : base(options)
         {
-            _settings = settings.Value;
+            //_settings = settings.Value;
             //Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder
-                .UseNpgsql($"" +
-                           $"Host={_settings.Host};" +
-                           $"Database={_settings.Database};" +
-                           $"Username={_settings.Username};" +
-                           $"Password={_settings.Password}")
+                .UseNpgsql(
+                    "Host=localhost;Database=jour;Username=postgres;Password=vpIKsULCBA",
+                    x => x.MigrationsAssembly("Jour.WebAPI"))
                 .UseSnakeCaseNamingConvention();
 
         public DbSet<Birthday> Birthdays { get; set; }
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Goal> Goals { get; set; }
         public DbSet<Plan> Plans { get; set; }
+        public DbSet<Tag> Tags { get; set; }
         public DbSet<Workout> Workouts { get; set; }
     } 
 }

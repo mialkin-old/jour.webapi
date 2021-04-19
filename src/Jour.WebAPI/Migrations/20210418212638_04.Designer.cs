@@ -3,15 +3,17 @@ using System;
 using Jour.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Jour.WebAPI.Migrations
 {
     [DbContext(typeof(JourContext))]
-    partial class JourContextModelSnapshot : ModelSnapshot
+    [Migration("20210418212638_04")]
+    partial class _04
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,11 +102,7 @@ namespace Jour.WebAPI.Migrations
                         .HasColumnName("goal_id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("date")
-                        .HasColumnName("date_created");
-
-                    b.Property<DateTime?>("Deadline")
+                    b.Property<DateTime>("Deadline")
                         .HasColumnType("date")
                         .HasColumnName("deadline");
 
@@ -131,7 +129,7 @@ namespace Jour.WebAPI.Migrations
                         .HasColumnName("plan_id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime?>("DateCompleted")
+                    b.Property<DateTime>("DateCompleted")
                         .HasColumnType("date")
                         .HasColumnName("date_completed");
 
@@ -162,19 +160,18 @@ namespace Jour.WebAPI.Migrations
                         .HasColumnName("tag_id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text")
+                    b.Property<int>("Title")
+                        .HasColumnType("integer")
                         .HasColumnName("title");
 
                     b.HasKey("TagId")
-                        .HasName("pk_tags");
+                        .HasName("pk_tag");
 
                     b.HasIndex("Title")
                         .IsUnique()
-                        .HasDatabaseName("ix_tags_title");
+                        .HasDatabaseName("ix_tag_title");
 
-                    b.ToTable("tags");
+                    b.ToTable("tag");
                 });
 
             modelBuilder.Entity("Jour.Database.Dtos.Workout", b =>
@@ -207,7 +204,7 @@ namespace Jour.WebAPI.Migrations
                     b.HasOne("Jour.Database.Dtos.Tag", null)
                         .WithMany()
                         .HasForeignKey("TagsTagId")
-                        .HasConstraintName("fk_goal_tag_tags_tags_tag_id")
+                        .HasConstraintName("fk_goal_tag_tag_tags_tag_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

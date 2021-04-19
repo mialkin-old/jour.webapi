@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,6 +16,11 @@ namespace Jour.Database.Dtos
         public string Description { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime Deadline { get; set; }
+        public DateTime DateCreated { get; set; }
+        
+        [Column(TypeName = "date")]
+        public DateTime? Deadline { get; set; }
+        
+        public ICollection<Tag> Tags { get; set; }
     }
 }

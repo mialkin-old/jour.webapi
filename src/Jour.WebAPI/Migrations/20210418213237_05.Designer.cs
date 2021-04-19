@@ -3,15 +3,17 @@ using System;
 using Jour.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Jour.WebAPI.Migrations
 {
     [DbContext(typeof(JourContext))]
-    partial class JourContextModelSnapshot : ModelSnapshot
+    [Migration("20210418213237_05")]
+    partial class _05
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,11 +102,7 @@ namespace Jour.WebAPI.Migrations
                         .HasColumnName("goal_id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("date")
-                        .HasColumnName("date_created");
-
-                    b.Property<DateTime?>("Deadline")
+                    b.Property<DateTime>("Deadline")
                         .HasColumnType("date")
                         .HasColumnName("deadline");
 
@@ -131,7 +129,7 @@ namespace Jour.WebAPI.Migrations
                         .HasColumnName("plan_id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime?>("DateCompleted")
+                    b.Property<DateTime>("DateCompleted")
                         .HasColumnType("date")
                         .HasColumnName("date_completed");
 
@@ -162,9 +160,8 @@ namespace Jour.WebAPI.Migrations
                         .HasColumnName("tag_id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text")
+                    b.Property<int>("Title")
+                        .HasColumnType("integer")
                         .HasColumnName("title");
 
                     b.HasKey("TagId")

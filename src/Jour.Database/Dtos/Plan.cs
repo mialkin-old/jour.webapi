@@ -16,7 +16,7 @@ namespace Jour.Database.Dtos
         public DateTime DateCreated { get; set; }
         
         [Column(TypeName = "date")]
-        public DateTime DateCompleted { get; set; }
+        public DateTime? DateCompleted { get; set; }
         
         public bool IsCompleted { get; set; }
     }
