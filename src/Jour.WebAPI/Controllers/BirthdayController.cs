@@ -30,7 +30,7 @@ namespace Jour.WebAPI.Controllers
 
             var months = new Months();
             
-            var result = list.Select(x => new BirthdayListVm
+            var result = list.Select(x => new BirthdayVm
                 {
                     BirthdayId = x.BirthdayId,
                     FirstName = x.FirstName,
@@ -42,14 +42,14 @@ namespace Jour.WebAPI.Controllers
                     IsActive = DateTime.UtcNow.AddHours(3).DayOfYear <= x.DateOfBirth.DayOfYear
                 })
                 .GroupBy(x => x.Month)
-                .Select(x => new
+                .Select(x => new BirthdayListVm
                 {
-                    month = x.Key,
-                    monthText = months[x.Key],
-                    hasActive = x.Any(y => y.IsActive),
-                    birthdays = x.OrderBy(y => y.DayOfYear)
+                    Month = x.Key,
+                    MonthText = months[x.Key],
+                    HasActiveBirthdays = x.Any(y => y.IsActive),
+                    Birthdays = x.OrderBy(y => y.DayOfYear).ToList()
                 })
-                .OrderBy(x => x.month);
+                .OrderBy(x => x.Month);
 
             return Json(result);
         }

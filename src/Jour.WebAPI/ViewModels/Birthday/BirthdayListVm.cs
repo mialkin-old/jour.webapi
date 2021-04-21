@@ -1,21 +1,15 @@
+using System.Collections.Generic;
+
 namespace Jour.WebAPI.ViewModels.Birthday
 {
     public class BirthdayListVm
     {
-        public int BirthdayId { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public int Day { get; set; }
-        
-        public int DayOfYear { get; set; }
-
         public int Month { get; set; }
-        
-        public int Year { get; set; }
 
-        public bool IsActive { get; set; }
+        public string MonthText { get; set; }
+
+        public bool HasActiveBirthdays { get; set; }
+
+        public List<BirthdayVm> Birthdays { get; set; }
     }
 }
