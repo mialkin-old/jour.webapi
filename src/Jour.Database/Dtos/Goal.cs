@@ -16,9 +16,6 @@ namespace Jour.Database.Dtos
         [Column(TypeName = "date")]
         public DateTime DateCreated { get; set; }
         
-        [Column(TypeName = "date")]
-        public DateTime? Deadline { get; set; }
-        
         public ICollection<Tag> Tags { get; set; }
     }
 }
