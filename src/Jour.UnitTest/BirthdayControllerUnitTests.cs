@@ -51,7 +51,7 @@ namespace Jour.UnitTest
             new object[] {new DateTime(2010, 12, 31, 21, 30, 0), new DateTime(1990, 1, 1)},
             new object[] {new DateTime(2010, 2, 27, 21, 30, 0), new DateTime(1992, 2, 29)},
             new object[] {new DateTime(2010, 2, 28), new DateTime(1992, 2, 29)},
-            new object[] {new DateTime(2010, 3, 1), new DateTime(1992, 2, 29)},
+            new object[] {new DateTime(2010, 3, 1, 20, 30, 0), new DateTime(1992, 2, 29)},
             new object[] {new DateTime(2020, 2, 29), new DateTime(1992, 2, 29)},
         };
 
