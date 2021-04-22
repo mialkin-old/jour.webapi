@@ -20,6 +20,8 @@ namespace Jour.UnitTest
     {
         private readonly DbContextOptions<JourContext> _options;
 
+        private readonly JourContext _context;
+
         private static DbConnection CreateInMemoryDatabase()
         {
             var connection = new SqliteConnection("Filename=:memory:");
@@ -34,46 +36,65 @@ namespace Jour.UnitTest
             _options = new DbContextOptionsBuilder<JourContext>()
                 .UseSqlite(CreateInMemoryDatabase())
                 .Options;
+
+            var context = new JourContext(_options);
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+
+            _context = context;
         }
 
-        [Fact]
-        public async Task List_HasActiveBirthdaysForMoscowTime()
+        public static readonly object[][] ActiveBirthdays =
+        {
+            new object[] {new DateTime(2010, 1, 10, 20, 30, 0), new DateTime(1990, 10, 9)},
+            new object[] {new DateTime(2010, 1, 10), new DateTime(1990, 1, 10)},
+            new object[] {new DateTime(2010, 12, 31, 21, 30, 0), new DateTime(1990, 1, 1)},
+            new object[] {new DateTime(2010, 2, 27, 21, 30, 0), new DateTime(1992, 2, 29)},
+            new object[] {new DateTime(2010, 2, 28), new DateTime(1992, 2, 29)},
+            new object[] {new DateTime(2010, 3, 1), new DateTime(1992, 2, 29)},
+            new object[] {new DateTime(2020, 2, 29), new DateTime(1992, 2, 29)},
+        };
+
+        [Theory, MemberData(nameof(ActiveBirthdays))]
+        public async Task List_HasActiveBirthdaysForMoscowTime(DateTime machineUtcDate, DateTime birthdayDate)
         {
             var now = new Mock<IDateTime>();
-            now.Setup(x => x.UtcNow).Returns(new DateTime(2021, 4, 15, 21, 30, 0));
-            
-            using (var context = new JourContextWrapper(_options))
-            {
-                context.Birthdays.Add(new Birthday {DateOfBirth = new DateTime(1960, 4, 16)});
-                await context.SaveChangesAsync();
+            now.Setup(x => x.UtcNow).Returns(machineUtcDate);
 
-                BirthdayController controller = new(context, now.Object);
+            _context.Birthdays.Add(new Birthday {DateOfBirth = birthdayDate});
+            await _context.SaveChangesAsync();
 
-                JsonResult jsonResult = (JsonResult) await controller.List();
-                var result = (List<BirthdaysInMonthVm>) jsonResult.Value;
+            BirthdayController controller = new(_context, now.Object);
 
-                Assert.True(result.First().HasActiveBirthdays);
-            }
+            JsonResult jsonResult = (JsonResult) await controller.List();
+            var result = (List<BirthdaysInMonthVm>) jsonResult.Value;
+
+            Assert.True(result.First().HasActiveBirthdays);
         }
-        
-        [Fact]
-        public async Task List_DoesNotHaveActiveBirthdaysForMoscowTime()
+
+        public static readonly object[][] InactiveBirthdays =
+        {
+            new object[] {new DateTime(2010, 1, 10, 21, 30, 0), new DateTime(1990, 1, 10)},
+            new object[] {new DateTime(2010, 1, 10), new DateTime(1990, 1, 9)},
+            new object[] {new DateTime(2010, 12, 31, 20, 30, 0), new DateTime(1990, 1, 1)},
+            new object[] {new DateTime(2010, 3, 1, 21, 30, 0), new DateTime(1992, 2, 29)},
+        };
+
+        [Theory, MemberData(nameof(InactiveBirthdays))]
+        public async Task List_DoesNotHaveActiveBirthdaysForMoscowTime(DateTime machineUtcDate, DateTime birthdayDate)
         {
             var now = new Mock<IDateTime>();
-            now.Setup(x => x.UtcNow).Returns(new DateTime(2021, 4, 16, 21, 30, 0));
-            
-            using (var context = new JourContextWrapper(_options))
-            {
-                context.Birthdays.Add(new Birthday {DateOfBirth = new DateTime(1960, 4, 16)});
-                await context.SaveChangesAsync();
+            now.Setup(x => x.UtcNow).Returns(machineUtcDate);
 
-                BirthdayController controller = new(context, now.Object);
+            _context.Birthdays.Add(new Birthday {DateOfBirth = birthdayDate});
+            await _context.SaveChangesAsync();
 
-                JsonResult jsonResult = (JsonResult) await controller.List();
-                var result = (List<BirthdaysInMonthVm>) jsonResult.Value;
+            BirthdayController controller = new(_context, now.Object);
 
-                Assert.False(result.First().HasActiveBirthdays);
-            }
+            JsonResult jsonResult = (JsonResult) await controller.List();
+            var result = (List<BirthdaysInMonthVm>) jsonResult.Value;
+
+            Assert.False(result.First().HasActiveBirthdays);
         }
     }
 }

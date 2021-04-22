@@ -61,7 +61,7 @@ namespace Jour.WebAPI.Controllers
         private bool IsActive(DateTime moscowTime, DateTime dateOfBirth)
         {
             if (dateOfBirth.Month == 2 && dateOfBirth.Day == 29)
-                return moscowTime <= new DateTime(moscowTime.Year, 3, 1);
+                return moscowTime <= new DateTime(moscowTime.Year, 3, 2);
 
             DateTime birthdayMoscow = new DateTime(moscowTime.Year, dateOfBirth.Month, dateOfBirth.Day);
             
