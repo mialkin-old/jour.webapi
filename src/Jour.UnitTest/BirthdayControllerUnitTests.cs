@@ -18,8 +18,6 @@ namespace Jour.UnitTest
 {
     public class BirthdayControllerUnitTests
     {
-        private readonly DbContextOptions<JourContext> _options;
-
         private readonly JourContext _context;
 
         private static DbConnection CreateInMemoryDatabase()
@@ -33,11 +31,11 @@ namespace Jour.UnitTest
 
         public BirthdayControllerUnitTests()
         {
-            _options = new DbContextOptionsBuilder<JourContext>()
+            var options = new DbContextOptionsBuilder<JourContext>()
                 .UseSqlite(CreateInMemoryDatabase())
                 .Options;
 
-            var context = new JourContext(_options);
+            var context = new JourContext(options);
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
@@ -61,7 +59,7 @@ namespace Jour.UnitTest
             var now = new Mock<IDateTime>();
             now.Setup(x => x.UtcNow).Returns(machineUtcDate);
 
-            _context.Birthdays.Add(new Birthday {DateOfBirth = birthdayDate});
+            await _context.Birthdays.AddAsync(new Birthday {DateOfBirth = birthdayDate});
             await _context.SaveChangesAsync();
 
             BirthdayController controller = new(_context, now.Object);
@@ -86,7 +84,7 @@ namespace Jour.UnitTest
             var now = new Mock<IDateTime>();
             now.Setup(x => x.UtcNow).Returns(machineUtcDate);
 
-            _context.Birthdays.Add(new Birthday {DateOfBirth = birthdayDate});
+            await _context.Birthdays.AddAsync(new Birthday {DateOfBirth = birthdayDate});
             await _context.SaveChangesAsync();
 
             BirthdayController controller = new(_context, now.Object);
