@@ -4,7 +4,12 @@ namespace Jour.WebAPI.Infrastructure
 {
     public class MachineClockDateTime : IDateTime
     {
-        public DateTime Now => System.DateTime.Now;
-        public DateTime UtcNow => System.DateTime.UtcNow;
+        public DateTime UtcNow { get; private set; }
+        public DateTime MoscowTimeNow { get; private set; }
+        public MachineClockDateTime()
+        {
+            UtcNow = DateTime.UtcNow;
+            MoscowTimeNow = UtcNow.AddHours(3);
+        }
     }
 }

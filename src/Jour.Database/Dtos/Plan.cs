@@ -4,12 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Jour.Database.Dtos
 {
-    public class Plan
+    public class ToDo
     {
         [Key]
-        public int PlanId { get; set; }
+        public int ToDoId { get; set; }
         
         [Required]
+        [MaxLength(50)]
         public string Title { get; set; }
         
         [Column(TypeName = "date")]
@@ -17,7 +18,5 @@ namespace Jour.Database.Dtos
         
         [Column(TypeName = "date")]
         public DateTime? DateCompleted { get; set; }
-        
-        public bool IsCompleted { get; set; }
     }
 }

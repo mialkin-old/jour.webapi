@@ -84,6 +84,7 @@ namespace Jour.UnitTest
         {
             var now = new Mock<IDateTime>();
             now.Setup(x => x.UtcNow).Returns(machineUtcDate);
+            now.Setup(x => x.MoscowTimeNow).Returns(machineUtcDate.AddHours(3));
 
             await _context.Birthdays.AddAsync(new Birthday {DateOfBirth = birthdayDate});
             await _context.SaveChangesAsync();

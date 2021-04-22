@@ -30,8 +30,6 @@ namespace Jour.WebAPI.Controllers
         {
             List<Birthday> list = await _context.Birthdays.ToListAsync();
 
-            DateTime moscowTime = _dateTime.UtcNow.AddHours(3);
-
             var months = new Months();
 
             List<BirthdaysInMonthVm> result = list.Select(x => new BirthdayVm
@@ -43,7 +41,7 @@ namespace Jour.WebAPI.Controllers
                     DayOfYear = x.DateOfBirth.DayOfYear,
                     Month = x.DateOfBirth.Month,
                     Year = x.DateOfBirth.Year,
-                    IsActive = IsActive(moscowTime, x.DateOfBirth)
+                    IsActive = IsActive(_dateTime.MoscowTimeNow, x.DateOfBirth)
                 })
                 .GroupBy(x => x.Month)
                 .Select(x => new BirthdaysInMonthVm
@@ -64,7 +62,6 @@ namespace Jour.WebAPI.Controllers
                 return moscowTime <= new DateTime(moscowTime.Year, 3, 2);
 
             DateTime birthdayMoscow = new DateTime(moscowTime.Year, dateOfBirth.Month, dateOfBirth.Day);
-            
             return moscowTime.DayOfYear <= birthdayMoscow.DayOfYear;
         }
     }

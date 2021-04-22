@@ -4,7 +4,7 @@ namespace Jour.WebAPI.Infrastructure
 {
     public interface IDateTime
     {
-        DateTime Now { get; }
         DateTime UtcNow { get; }
+        DateTime MoscowTimeNow { get; }
     }
 }
