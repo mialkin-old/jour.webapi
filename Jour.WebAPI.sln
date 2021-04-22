@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jour.Database", "src\Jour.D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C3E2328F-6465-455A-BC9A-DCF1A2F03B69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jour.UnitTest", "test\Jour.UnitTest\Jour.UnitTest.csproj", "{06968810-1E48-496E-B822-902F11A5D7A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jour.UnitTests", "test\Jour.UnitTests\Jour.UnitTests.csproj", "{06968810-1E48-496E-B822-902F11A5D7A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
