@@ -23,7 +23,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Jour.WebAPI\Jour.WebAPI.csproj" />
+      <ProjectReference Include="..\..\src\Jour.Database\Jour.Database.csproj" />
+      <ProjectReference Include="..\..\src\Jour.WebAPI\Jour.WebAPI.csproj" />
     </ItemGroup>
 
 </Project>
