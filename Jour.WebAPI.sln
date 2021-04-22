@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C3E2328F-6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jour.UnitTests", "test\Jour.UnitTests\Jour.UnitTests.csproj", "{06968810-1E48-496E-B822-902F11A5D7A3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{04068145-AA91-4CE6-8BAD-FD54EBD18122}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,5 +48,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{06968810-1E48-496E-B822-902F11A5D7A3} = {C3E2328F-6465-455A-BC9A-DCF1A2F03B69}
+		{8DC7FCD7-DA06-401C-B6F3-066BEF41627B} = {04068145-AA91-4CE6-8BAD-FD54EBD18122}
+		{D05DE1FE-C3D7-4CCB-AF4C-35B569A007D5} = {04068145-AA91-4CE6-8BAD-FD54EBD18122}
 	EndGlobalSection
 EndGlobal
