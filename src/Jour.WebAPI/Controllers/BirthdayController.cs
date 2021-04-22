@@ -17,10 +17,12 @@ namespace Jour.WebAPI.Controllers
     public class BirthdayController : Controller
     {
         private readonly JourContext _context;
+        private readonly IDateTime _dateTime;
 
-        public BirthdayController(JourContext context)
+        public BirthdayController(JourContext context, IDateTime dateTime)
         {
             _context = context;
+            _dateTime = dateTime;
         }
 
         [Route("list")]
@@ -28,9 +30,11 @@ namespace Jour.WebAPI.Controllers
         {
             List<Birthday> list = await _context.Birthdays.ToListAsync();
 
+            DateTime moscowTime = _dateTime.UtcNow.AddHours(3);
+
             var months = new Months();
-            
-            var result = list.Select(x => new BirthdayVm
+
+            List<BirthdaysInMonthVm> result = list.Select(x => new BirthdayVm
                 {
                     BirthdayId = x.BirthdayId,
                     FirstName = x.FirstName,
@@ -39,19 +43,29 @@ namespace Jour.WebAPI.Controllers
                     DayOfYear = x.DateOfBirth.DayOfYear,
                     Month = x.DateOfBirth.Month,
                     Year = x.DateOfBirth.Year,
-                    IsActive = DateTime.UtcNow.AddHours(3).DayOfYear <= x.DateOfBirth.DayOfYear
+                    IsActive = IsActive(moscowTime, x.DateOfBirth)
                 })
                 .GroupBy(x => x.Month)
-                .Select(x => new BirthdayListVm
+                .Select(x => new BirthdaysInMonthVm
                 {
                     Month = x.Key,
                     MonthText = months[x.Key],
                     HasActiveBirthdays = x.Any(y => y.IsActive),
                     Birthdays = x.OrderBy(y => y.DayOfYear).ToList()
                 })
-                .OrderBy(x => x.Month);
+                .OrderBy(x => x.Month).ToList();
 
             return Json(result);
+        }
+
+        private bool IsActive(DateTime moscowTime, DateTime dateOfBirth)
+        {
+            if (dateOfBirth.Month == 2 && dateOfBirth.Day == 29)
+                return moscowTime <= new DateTime(moscowTime.Year, 3, 1);
+
+            DateTime birthdayMoscow = new DateTime(moscowTime.Year, dateOfBirth.Month, dateOfBirth.Day);
+            
+            return moscowTime.DayOfYear <= birthdayMoscow.DayOfYear;
         }
     }
 }

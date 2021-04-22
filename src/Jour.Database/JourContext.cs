@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace Jour.Database
 {
-    public sealed class JourContext : DbContext
+    public class JourContext : DbContext
     {
         private readonly DatabaseSettings _settings;
 
@@ -14,12 +14,12 @@ namespace Jour.Database
             //Database.EnsureCreated();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder
-                .UseNpgsql(
-                    "Host=localhost;Database=jour;Username=postgres;Password=vpIKsULCBA",
-                    x => x.MigrationsAssembly("Jour.WebAPI"))
-                .UseSnakeCaseNamingConvention();
+        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //     => optionsBuilder
+        //         .UseNpgsql(
+        //             "Host=localhost;Database=jour;Username=postgres;Password=vpIKsULCBA",
+        //             x => x.MigrationsAssembly("Jour.WebAPI"))
+        //         .UseSnakeCaseNamingConvention();
 
         public DbSet<Birthday> Birthdays { get; set; }
         public DbSet<Exercise> Exercises { get; set; }

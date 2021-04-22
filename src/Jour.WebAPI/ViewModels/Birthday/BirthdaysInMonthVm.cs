@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Jour.WebAPI.ViewModels.Birthday
 {
-    public class BirthdayListVm
+    public class BirthdaysInMonthVm
     {
         public int Month { get; set; }
 

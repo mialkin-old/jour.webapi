@@ -61,6 +61,8 @@ namespace Jour.WebAPI
 
             services.AddControllers();
 
+            services.AddSingleton<IDateTime, MachineClockDateTime>();
+            
             services.AddCustomServices(Configuration);
 
             services.AddDbContext<JourContext>();
