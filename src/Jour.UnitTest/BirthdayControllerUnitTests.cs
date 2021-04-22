@@ -11,6 +11,7 @@ using Jour.WebAPI.ViewModels.Birthday;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
 
@@ -31,11 +32,11 @@ namespace Jour.UnitTest
 
         public BirthdayControllerUnitTests()
         {
-            var options = new DbContextOptionsBuilder<JourContext>()
+            DbContextOptions<JourContext> options = new DbContextOptionsBuilder<JourContext>()
                 .UseSqlite(CreateInMemoryDatabase())
                 .Options;
 
-            var context = new JourContext(options);
+            var context = new JourContext(options, Options.Create(new DatabaseSettings()));
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
