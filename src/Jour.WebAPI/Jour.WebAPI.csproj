@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Jour.Database.Migrations\Jour.Database.Migrations.csproj" />
     <ProjectReference Include="..\Jour.Database\Jour.Database.csproj" />
   </ItemGroup>
 

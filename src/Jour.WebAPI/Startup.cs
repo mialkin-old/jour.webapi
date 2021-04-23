@@ -71,7 +71,7 @@ namespace Jour.WebAPI
                 throw new ArgumentNullException(nameof(connectionStr));
 
             services.AddDbContext<JourContext>(x => x
-                .UseNpgsql(connectionStr)
+                .UseNpgsql(connectionStr, y => y.MigrationsAssembly("Jour.Database.Migrations"))
                 .UseSnakeCaseNamingConvention());
         }
 
