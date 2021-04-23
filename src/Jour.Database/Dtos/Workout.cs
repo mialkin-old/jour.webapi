@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Jour.Database.Dtos
 {
-    public class Training
+    public class Workout
     {
         [Key]
         public int WorkoutId { get; set; }

@@ -14,6 +14,6 @@ namespace Jour.Database
         public DbSet<Goal> Goals { get; set; }
         public DbSet<Todo> Todos { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        public DbSet<Training> Training { get; set; }
+        public DbSet<Workout> Workouts { get; set; }
     }
 }

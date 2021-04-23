@@ -1,9 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jour.Database.Dtos
 {
+    [Index(nameof(CompletedUtc))]
     public class Todo
     {
         [Key]
@@ -13,10 +14,8 @@ namespace Jour.Database.Dtos
         [MaxLength(50)]
         public string Title { get; set; }
         
-        [Column(TypeName = "date")]
         public DateTime CreatedUtc { get; set; }
         
-        [Column(TypeName = "date")]
         public DateTime? CompletedUtc { get; set; }
     }
 }

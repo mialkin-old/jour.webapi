@@ -3,15 +3,17 @@ using System;
 using Jour.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Jour.Database.Migrations.Migrations
 {
     [DbContext(typeof(JourContext))]
-    partial class JourContextModelSnapshot : ModelSnapshot
+    [Migration("20210423181328_02")]
+    partial class _02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,11 +149,11 @@ namespace Jour.Database.Migrations.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<DateTime?>("CompletedUtc")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("date")
                         .HasColumnName("completed_utc");
 
                     b.Property<DateTime>("CreatedUtc")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("date")
                         .HasColumnName("created_utc");
 
                     b.Property<string>("Title")

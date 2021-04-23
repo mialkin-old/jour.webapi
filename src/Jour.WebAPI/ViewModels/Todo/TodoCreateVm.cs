@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Jour.WebAPI.ViewModels.Plan
+namespace Jour.WebAPI.ViewModels.Todo
 {
-    public class ToDoCreateVm
+    public class TodoCreateVm
     {
         [Required] 
         [MaxLength(50)]
