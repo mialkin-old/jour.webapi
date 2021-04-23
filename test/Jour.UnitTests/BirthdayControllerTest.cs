@@ -36,7 +36,7 @@ namespace Jour.UnitTest
                 .UseSqlite(CreateInMemoryDatabase())
                 .Options;
 
-            var context = new JourContext(options, Options.Create(new DatabaseSettings()));
+            var context = new JourContext(options);
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 

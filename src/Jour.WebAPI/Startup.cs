@@ -1,3 +1,4 @@
+#nullable enable
 using Jour.WebAPI.Infrastructure;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 using Jour.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jour.WebAPI
 {
@@ -62,10 +64,15 @@ namespace Jour.WebAPI
             services.AddControllers();
 
             services.AddSingleton<IDateTime, MachineClockDateTime>();
-            
-            services.AddCustomServices(Configuration);
+            services.ConfigureCustomOptions(Configuration);
 
-            services.AddDbContext<JourContext>();
+            string? connectionStr = Environment.GetEnvironmentVariable("JOUR_ConnectionString");
+            if (string.IsNullOrEmpty(connectionStr))
+                throw new ArgumentNullException(nameof(connectionStr));
+
+            services.AddDbContext<JourContext>(x => x
+                .UseNpgsql(connectionStr)
+                .UseSnakeCaseNamingConvention());
         }
 
         public void Configure(IApplicationBuilder app)
