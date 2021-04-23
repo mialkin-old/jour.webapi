@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jour.WebAPI.Controllers
 {
-    [Route("api/v1/[controller]")]
     [Authorize]
+    [Route("api/v1/[controller]")]
     public class BirthdayController : Controller
     {
         private readonly JourContext _context;

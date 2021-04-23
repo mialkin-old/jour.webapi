@@ -14,9 +14,9 @@ namespace Jour.Database.Dtos
         public string Title { get; set; }
         
         [Column(TypeName = "date")]
-        public DateTime DateCreated { get; set; }
+        public DateTime CreatedUtc { get; set; }
         
         [Column(TypeName = "date")]
-        public DateTime? DateCompleted { get; set; }
+        public DateTime? CompletedUtc { get; set; }
     }
 }
