@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Jour.Database.Dtos
 {
-    public class ToDo
+    public class Todo
     {
         [Key]
         public int ToDoId { get; set; }

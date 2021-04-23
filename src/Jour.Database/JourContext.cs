@@ -12,7 +12,7 @@ namespace Jour.Database
         public DbSet<Birthday> Birthdays { get; set; }
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Goal> Goals { get; set; }
-        public DbSet<ToDo> ToDos { get; set; }
+        public DbSet<Todo> Todos { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Training> Training { get; set; }
     }

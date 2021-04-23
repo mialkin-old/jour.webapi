@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Jour.Database.Migrations.Migrations
 {
     [DbContext(typeof(JourContext))]
-    [Migration("20210423130843_00")]
-    partial class _00
+    [Migration("20210423133936_01")]
+    partial class _01
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -163,9 +163,9 @@ namespace Jour.Database.Migrations.Migrations
                         .HasColumnName("title");
 
                     b.HasKey("ToDoId")
-                        .HasName("pk_to_dos");
+                        .HasName("pk_todos");
 
-                    b.ToTable("to_dos");
+                    b.ToTable("todos");
                 });
 
             modelBuilder.Entity("Jour.Database.Dtos.Training", b =>

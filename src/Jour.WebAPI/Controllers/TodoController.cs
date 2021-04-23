@@ -12,12 +12,12 @@ namespace Jour.WebAPI.Controllers
 {
     [Authorize]
     [Route("api/v1/[controller]")]
-    public class ToDoController : Controller
+    public class TodoController : Controller
     {
         private readonly JourContext _context;
         private readonly IDateTime _dateTime;
 
-        public ToDoController(JourContext context, IDateTime dateTime)
+        public TodoController(JourContext context, IDateTime dateTime)
         {
             _context = context;
             _dateTime = dateTime;
@@ -27,13 +27,13 @@ namespace Jour.WebAPI.Controllers
         [Route("create")]
         public async Task<IActionResult> Create(ToDoCreateVm model)
         {
-            var todo = new ToDo
+            var todo = new Todo
             {
                 Title = model.Title,
                 CreatedUtc = _dateTime.UtcNow
             };
 
-            _context.ToDos.Add(todo);
+            _context.Todos.Add(todo);
             await _context.SaveChangesAsync();
 
             return Ok();
@@ -43,7 +43,7 @@ namespace Jour.WebAPI.Controllers
         [Route("list")]
         public async Task<IActionResult> List()
         {
-            List<ToDo> list = await _context.ToDos.ToListAsync();
+            List<Todo> list = await _context.Todos.ToListAsync();
             return Json(list);
         }
         
@@ -51,8 +51,8 @@ namespace Jour.WebAPI.Controllers
         [Route("complete")]
         public async Task<IActionResult> Complete(int id)
         {
-            ToDo toDo = await _context.ToDos.FirstAsync(x => x.ToDoId == id);
-            toDo.CompletedUtc = _dateTime.UtcNow;
+            Todo todo = await _context.Todos.FirstAsync(x => x.ToDoId == id);
+            todo.CompletedUtc = _dateTime.UtcNow;
             await _context.SaveChangesAsync();
 
             return Ok();
@@ -62,8 +62,8 @@ namespace Jour.WebAPI.Controllers
         [Route("uncomplete")]
         public async Task<IActionResult> UnComplete(int id)
         {
-            ToDo toDo = await _context.ToDos.FirstAsync(x => x.ToDoId == id);
-            toDo.CompletedUtc = null;
+            Todo todo = await _context.Todos.FirstAsync(x => x.ToDoId == id);
+            todo.CompletedUtc = null;
             await _context.SaveChangesAsync();
 
             return Ok();
@@ -73,8 +73,8 @@ namespace Jour.WebAPI.Controllers
         [Route("delete")]
         public async Task<IActionResult> Delete(int id)
         {
-            ToDo toDo = await _context.ToDos.FirstAsync(x => x.ToDoId == id);
-            _context.ToDos.Remove(toDo);
+            Todo todo = await _context.Todos.FirstAsync(x => x.ToDoId == id);
+            _context.Todos.Remove(todo);
             await _context.SaveChangesAsync();
 
             return Ok();

@@ -138,7 +138,7 @@ namespace Jour.Database.Migrations.Migrations
                     b.ToTable("tags");
                 });
 
-            modelBuilder.Entity("Jour.Database.Dtos.ToDo", b =>
+            modelBuilder.Entity("Jour.Database.Dtos.Todo", b =>
                 {
                     b.Property<int>("ToDoId")
                         .ValueGeneratedOnAdd()
@@ -161,9 +161,9 @@ namespace Jour.Database.Migrations.Migrations
                         .HasColumnName("title");
 
                     b.HasKey("ToDoId")
-                        .HasName("pk_to_dos");
+                        .HasName("pk_todos");
 
-                    b.ToTable("to_dos");
+                    b.ToTable("todos");
                 });
 
             modelBuilder.Entity("Jour.Database.Dtos.Training", b =>
