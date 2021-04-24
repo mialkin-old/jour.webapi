@@ -15,6 +15,6 @@ namespace Jour.Database.Dtos
         public string Title { get; set; }
         
         public ICollection<Goal> Goals { get; set; }
-        public ICollection<Tag> Tags { get; set; }
+        public ICollection<Todo> Todos { get; set; }
     }
 }

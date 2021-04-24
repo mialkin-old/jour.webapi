@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,5 +18,7 @@ namespace Jour.Database.Dtos
         public DateTime CreatedUtc { get; set; }
         
         public DateTime? CompletedUtc { get; set; }
+        
+        public ICollection<Tag> Tags { get; set; }
     }
 }

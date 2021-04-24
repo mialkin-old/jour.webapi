@@ -3,15 +3,17 @@ using System;
 using Jour.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Jour.Database.Migrations.Migrations
 {
     [DbContext(typeof(JourContext))]
-    partial class JourContextModelSnapshot : ModelSnapshot
+    [Migration("20210423192340_05")]
+    partial class _05
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,18 +125,32 @@ namespace Jour.Database.Migrations.Migrations
                         .HasColumnName("tag_id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int?>("TagId1")
+                        .HasColumnType("integer")
+                        .HasColumnName("tag_id1");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("title");
 
+                    b.Property<int?>("ToDoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("to_do_id");
+
                     b.HasKey("TagId")
                         .HasName("pk_tags");
+
+                    b.HasIndex("TagId1")
+                        .HasDatabaseName("ix_tags_tag_id1");
 
                     b.HasIndex("Title")
                         .IsUnique()
                         .HasDatabaseName("ix_tags_title");
+
+                    b.HasIndex("ToDoId")
+                        .HasDatabaseName("ix_tags_to_do_id");
 
                     b.ToTable("tags");
                 });
@@ -188,25 +204,6 @@ namespace Jour.Database.Migrations.Migrations
                     b.ToTable("workouts");
                 });
 
-            modelBuilder.Entity("TagTodo", b =>
-                {
-                    b.Property<int>("TagsTagId")
-                        .HasColumnType("integer")
-                        .HasColumnName("tags_tag_id");
-
-                    b.Property<int>("TodosToDoId")
-                        .HasColumnType("integer")
-                        .HasColumnName("todos_to_do_id");
-
-                    b.HasKey("TagsTagId", "TodosToDoId")
-                        .HasName("pk_tag_todo");
-
-                    b.HasIndex("TodosToDoId")
-                        .HasDatabaseName("ix_tag_todo_todos_to_do_id");
-
-                    b.ToTable("tag_todo");
-                });
-
             modelBuilder.Entity("GoalTag", b =>
                 {
                     b.HasOne("Jour.Database.Dtos.Goal", null)
@@ -232,21 +229,27 @@ namespace Jour.Database.Migrations.Migrations
                         .HasConstraintName("fk_exercises_workouts_workout_id");
                 });
 
-            modelBuilder.Entity("TagTodo", b =>
+            modelBuilder.Entity("Jour.Database.Dtos.Tag", b =>
                 {
                     b.HasOne("Jour.Database.Dtos.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagsTagId")
-                        .HasConstraintName("fk_tag_todo_tags_tags_tag_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Tags")
+                        .HasForeignKey("TagId1")
+                        .HasConstraintName("fk_tags_tags_tag_id1");
 
                     b.HasOne("Jour.Database.Dtos.Todo", null)
-                        .WithMany()
-                        .HasForeignKey("TodosToDoId")
-                        .HasConstraintName("fk_tag_todo_todos_todos_to_do_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Tags")
+                        .HasForeignKey("ToDoId")
+                        .HasConstraintName("fk_tags_todos_to_do_id");
+                });
+
+            modelBuilder.Entity("Jour.Database.Dtos.Tag", b =>
+                {
+                    b.Navigation("Tags");
+                });
+
+            modelBuilder.Entity("Jour.Database.Dtos.Todo", b =>
+                {
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("Jour.Database.Dtos.Workout", b =>
