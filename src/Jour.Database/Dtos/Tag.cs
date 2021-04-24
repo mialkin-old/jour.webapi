@@ -11,7 +11,6 @@ namespace Jour.Database.Dtos
         public int TagId { get; set; }
         
         [Required]
-        [MaxLength(50)]
         public string Title { get; set; }
 
         public ICollection<Goal> Goals { get; set; }

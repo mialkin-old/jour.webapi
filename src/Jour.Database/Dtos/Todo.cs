@@ -12,7 +12,6 @@ namespace Jour.Database.Dtos
         public int ToDoId { get; set; }
         
         [Required]
-        [MaxLength(50)]
         public string Title { get; set; }
         
         [Required]

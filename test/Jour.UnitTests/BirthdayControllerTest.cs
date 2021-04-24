@@ -11,11 +11,10 @@ using Jour.WebAPI.ViewModels.Birthday;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
 
-namespace Jour.UnitTest
+namespace Jour.UnitTests
 {
     public class BirthdayControllerUnitTests
     {
@@ -24,9 +23,7 @@ namespace Jour.UnitTest
         private static DbConnection CreateInMemoryDatabase()
         {
             var connection = new SqliteConnection("Filename=:memory:");
-
             connection.Open();
-
             return connection;
         }
 
@@ -57,13 +54,13 @@ namespace Jour.UnitTest
         [Theory, MemberData(nameof(ActiveBirthdays))]
         public async Task List_HasActiveBirthdaysForMoscowTime(DateTime machineUtcDate, DateTime birthdayDate)
         {
-            var now = new Mock<IDateTime>();
-            now.Setup(x => x.UtcNow).Returns(machineUtcDate);
+            var dateTime = new Mock<IDateTime>();
+            dateTime.Setup(x => x.UtcNow).Returns(machineUtcDate);
 
             await _context.Birthdays.AddAsync(new Birthday {DateOfBirth = birthdayDate});
             await _context.SaveChangesAsync();
 
-            BirthdayController controller = new(_context, now.Object);
+            BirthdayController controller = new(_context, dateTime.Object);
 
             JsonResult jsonResult = (JsonResult) await controller.List();
             var result = (List<BirthdaysInMonthVm>) jsonResult.Value;
@@ -82,14 +79,14 @@ namespace Jour.UnitTest
         [Theory, MemberData(nameof(InactiveBirthdays))]
         public async Task List_DoesNotHaveActiveBirthdaysForMoscowTime(DateTime machineUtcDate, DateTime birthdayDate)
         {
-            var now = new Mock<IDateTime>();
-            now.Setup(x => x.UtcNow).Returns(machineUtcDate);
-            now.Setup(x => x.MoscowTimeNow).Returns(machineUtcDate.AddHours(3));
+            var dateTime = new Mock<IDateTime>();
+            dateTime.Setup(x => x.UtcNow).Returns(machineUtcDate);
+            dateTime.Setup(x => x.MoscowTimeNow).Returns(machineUtcDate.AddHours(3));
 
             await _context.Birthdays.AddAsync(new Birthday {DateOfBirth = birthdayDate});
             await _context.SaveChangesAsync();
 
-            BirthdayController controller = new(_context, now.Object);
+            BirthdayController controller = new(_context, dateTime.Object);
 
             JsonResult jsonResult = (JsonResult) await controller.List();
             var result = (List<BirthdaysInMonthVm>) jsonResult.Value;
