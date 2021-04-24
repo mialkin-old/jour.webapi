@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Jour.Database;
 using Jour.Database.Dtos;
@@ -29,7 +30,9 @@ namespace Jour.WebAPI.Controllers
         public async Task<IActionResult> List()
         {
             List<Tag> list = await _context.Tags.ToListAsync();
-            return Json(list);
+            IEnumerable<TagVm> result = list.Select(x => new TagVm {TagId = x.TagId, Title = x.Title});
+            
+            return Json(result);
         }
 
         [HttpPost]

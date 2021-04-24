@@ -9,7 +9,7 @@ namespace Jour.Database.Dtos
     public class Todo
     {
         [Key]
-        public int ToDoId { get; set; }
+        public int TodoId { get; set; }
         
         [Required]
         public string Title { get; set; }

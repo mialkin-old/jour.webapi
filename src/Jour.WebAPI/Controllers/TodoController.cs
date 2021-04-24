@@ -5,6 +5,7 @@ using Jour.Database;
 using Jour.Database.Dtos;
 using Jour.WebAPI.Infrastructure;
 using Jour.WebAPI.ViewModels;
+using Jour.WebAPI.ViewModels.Tag;
 using Jour.WebAPI.ViewModels.Todo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -52,10 +53,19 @@ namespace Jour.WebAPI.Controllers
         public async Task<IActionResult> Active()
         {
             List<Todo> list = await _context.Todos
+                .Include(x => x.Tags)
                 .Where(x => x.CompletedUtc == null)
-                .OrderByDescending(x => x.CreatedUtc)
+                .OrderByDescending(x => x.TodoId)
                 .ToListAsync();
-            return Json(list);
+
+            IEnumerable<TodoVm> result = list.Select(x => new TodoVm
+            {
+                TodoId = x.TodoId,
+                Title = x.Title,
+                Tags = x.Tags.Select(y => new TagVm {TagId = y.TagId, Title = y.Title}).ToList()
+            });
+
+            return Json(result);
         }
 
         [HttpGet]
@@ -63,17 +73,26 @@ namespace Jour.WebAPI.Controllers
         public async Task<IActionResult> Inactive()
         {
             List<Todo> list = await _context.Todos
+                .Include(x => x.Tags)
                 .Where(x => x.CompletedUtc != null)
                 .OrderByDescending(x => x.CompletedUtc)
                 .ToListAsync();
-            return Json(list);
+
+            IEnumerable<TodoVm> result = list.Select(x => new TodoVm
+            {
+                TodoId = x.TodoId,
+                Title = x.Title,
+                Tags = x.Tags.Select(y => new TagVm {TagId = y.TagId, Title = y.Title}).ToList()
+            });
+
+            return Json(result);
         }
 
         [HttpPost]
         [Route("complete")]
         public async Task<IActionResult> Complete([FromBody] IdVm model)
         {
-            Todo todo = await _context.Todos.FirstAsync(x => x.ToDoId == model.Id);
+            Todo todo = await _context.Todos.FirstAsync(x => x.TodoId == model.Id);
             todo.CompletedUtc = _dateTime.UtcNow;
             await _context.SaveChangesAsync();
 
@@ -84,7 +103,7 @@ namespace Jour.WebAPI.Controllers
         [Route("uncomplete")]
         public async Task<IActionResult> UnComplete([FromBody] IdVm model)
         {
-            Todo todo = await _context.Todos.FirstAsync(x => x.ToDoId == model.Id);
+            Todo todo = await _context.Todos.FirstAsync(x => x.TodoId == model.Id);
             todo.CompletedUtc = null;
             await _context.SaveChangesAsync();
 
@@ -95,7 +114,7 @@ namespace Jour.WebAPI.Controllers
         [Route("delete")]
         public async Task<IActionResult> Delete([FromBody] IdVm model)
         {
-            Todo todo = await _context.Todos.FirstAsync(x => x.ToDoId == model.Id);
+            Todo todo = await _context.Todos.FirstAsync(x => x.TodoId == model.Id);
             _context.Todos.Remove(todo);
             await _context.SaveChangesAsync();
 
