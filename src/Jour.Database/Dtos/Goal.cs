@@ -14,7 +14,7 @@ namespace Jour.Database.Dtos
         public string Title { get; set; }
         
         [Column(TypeName = "date")]
-        public DateTime DateCreated { get; set; }
+        public DateTime Created { get; set; }
         
         public ICollection<Tag> Tags { get; set; }
     }

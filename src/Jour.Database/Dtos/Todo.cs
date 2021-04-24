@@ -15,6 +15,7 @@ namespace Jour.Database.Dtos
         [MaxLength(50)]
         public string Title { get; set; }
         
+        [Required]
         public DateTime CreatedUtc { get; set; }
         
         public DateTime? CompletedUtc { get; set; }

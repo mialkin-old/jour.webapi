@@ -13,7 +13,7 @@ namespace Jour.Database.Dtos
         [Required]
         [MaxLength(50)]
         public string Title { get; set; }
-        
+
         public ICollection<Goal> Goals { get; set; }
         public ICollection<Todo> Todos { get; set; }
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Jour.Database;
 using Jour.Database.Dtos;
@@ -41,10 +42,24 @@ namespace Jour.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("list")]
-        public async Task<IActionResult> List()
+        [Route("active")]
+        public async Task<IActionResult> Active()
         {
-            List<Todo> list = await _context.Todos.ToListAsync();
+            List<Todo> list = await _context.Todos
+                .Where(x => x.CompletedUtc == null)
+                .OrderByDescending(x => x.CreatedUtc)
+                .ToListAsync();
+            return Json(list);
+        }
+        
+        [HttpGet]
+        [Route("inactive")]
+        public async Task<IActionResult> Inactive()
+        {
+            List<Todo> list = await _context.Todos
+                .Where(x => x.CompletedUtc != null)
+                .OrderByDescending(x => x.CompletedUtc)
+                .ToListAsync();
             return Json(list);
         }
 
@@ -78,7 +93,7 @@ namespace Jour.WebAPI.Controllers
             _context.Todos.Remove(todo);
             await _context.SaveChangesAsync();
 
-            return Ok(new SuccessResult());
+            return SuccessResult();
         }
     }
 }
