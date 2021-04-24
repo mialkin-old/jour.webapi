@@ -7,5 +7,7 @@ namespace Jour.WebAPI.ViewModels.Todo
         [Required] 
         [MaxLength(50)]
         public string Title { get; set; }
+
+        public int TagId { get; set; }
     }
 }

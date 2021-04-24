@@ -35,6 +35,12 @@ namespace Jour.WebAPI.Controllers
                 CreatedUtc = _dateTime.UtcNow
             };
 
+            if (model.TagId > 0)
+            {
+                Tag tag = await _context.Tags.FirstAsync(x => x.TagId == model.TagId);
+                todo.Tags = new List<Tag> {tag};
+            }
+
             _context.Todos.Add(todo);
             await _context.SaveChangesAsync();
 
@@ -51,7 +57,7 @@ namespace Jour.WebAPI.Controllers
                 .ToListAsync();
             return Json(list);
         }
-        
+
         [HttpGet]
         [Route("inactive")]
         public async Task<IActionResult> Inactive()
@@ -65,9 +71,9 @@ namespace Jour.WebAPI.Controllers
 
         [HttpPost]
         [Route("complete")]
-        public async Task<IActionResult> Complete(int id)
+        public async Task<IActionResult> Complete([FromBody] IdVm model)
         {
-            Todo todo = await _context.Todos.FirstAsync(x => x.ToDoId == id);
+            Todo todo = await _context.Todos.FirstAsync(x => x.ToDoId == model.Id);
             todo.CompletedUtc = _dateTime.UtcNow;
             await _context.SaveChangesAsync();
 
@@ -76,9 +82,9 @@ namespace Jour.WebAPI.Controllers
 
         [HttpPost]
         [Route("uncomplete")]
-        public async Task<IActionResult> UnComplete(int id)
+        public async Task<IActionResult> UnComplete([FromBody] IdVm model)
         {
-            Todo todo = await _context.Todos.FirstAsync(x => x.ToDoId == id);
+            Todo todo = await _context.Todos.FirstAsync(x => x.ToDoId == model.Id);
             todo.CompletedUtc = null;
             await _context.SaveChangesAsync();
 
