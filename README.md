@@ -31,6 +31,16 @@ Make sure that the service is runnig:
 kubectl port-forward --namespace mialkin svc/jour-webapi 8080:80
 ```
 
+## Creating secret
+
+```bash
+kubectl create secret generic jour-secrets \
+--namespace=mialkin \
+--from-literal=username=YOUR_USERNAME \
+--from-literal=password='YOUR_PASSWORD' \
+--from-literal=connectionstring='YOUR_CONNECTION_STRING'
+```
+
 ## Running in Docker
 
 ```bash

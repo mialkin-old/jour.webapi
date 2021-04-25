@@ -32,26 +32,11 @@ spec:
                 secretKeyRef:
                   name: jour-secrets
                   key: password
-            - name: JOUR_Db__Host
+            - name: JOUR_ConnectionString
               valueFrom:
                 secretKeyRef:
                   name: jour-secrets
-                  key: dbhost
-            - name: JOUR_Db__Database
-              valueFrom:
-                secretKeyRef:
-                  name: jour-secrets
-                  key: dbname
-            - name: JOUR_Db__Username
-              valueFrom:
-                secretKeyRef:
-                  name: jour-secrets
-                  key: dbusername
-            - name: JOUR_Db__Password
-              valueFrom:
-                secretKeyRef:
-                  name: jour-secrets
-                  key: dbpassword                  
+                  key: connectionstring
 ---
 apiVersion: v1
 kind: Service
