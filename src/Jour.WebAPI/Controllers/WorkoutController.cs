@@ -5,7 +5,7 @@ namespace Jour.WebAPI.Controllers
 {
     [Route("api/v1/[controller]")]
     [Authorize]
-    public class TrainingController : Controller
+    public class WorkoutController : AppController
     {
         public IActionResult Index()
         {
