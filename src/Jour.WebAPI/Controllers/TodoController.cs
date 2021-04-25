@@ -62,6 +62,7 @@ namespace Jour.WebAPI.Controllers
             {
                 TodoId = x.TodoId,
                 Title = x.Title,
+                Duration = new TodoDuration {Hours = x.Hours, Minutes = x.Minutes},
                 Tags = x.Tags.Select(y => new TagVm {TagId = y.TagId, Title = y.Title}).ToList()
             });
 
@@ -82,6 +83,7 @@ namespace Jour.WebAPI.Controllers
             {
                 TodoId = x.TodoId,
                 Title = x.Title,
+                Duration = new TodoDuration {Hours = x.Hours, Minutes = x.Minutes},
                 Tags = x.Tags.Select(y => new TagVm {TagId = y.TagId, Title = y.Title}).ToList()
             });
 
@@ -90,10 +92,13 @@ namespace Jour.WebAPI.Controllers
 
         [HttpPost]
         [Route("complete")]
-        public async Task<IActionResult> Complete([FromBody] IdVm model)
+        public async Task<IActionResult> Complete([FromBody] TodoCompleteVm model)
         {
             Todo todo = await _context.Todos.FirstAsync(x => x.TodoId == model.Id);
             todo.CompletedUtc = _dateTime.UtcNow;
+            todo.Hours = model.Duration.Hours;
+            todo.Minutes = model.Duration.Minutes;
+
             await _context.SaveChangesAsync();
 
             return Ok();

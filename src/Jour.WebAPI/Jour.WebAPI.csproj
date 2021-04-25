@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Jour.Database\Jour.Database.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Telegram\Models" />
+  </ItemGroup>
+
 </Project>

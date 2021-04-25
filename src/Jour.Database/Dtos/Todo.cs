@@ -16,9 +16,14 @@ namespace Jour.Database.Dtos
         
         [Required]
         public DateTime CreatedUtc { get; set; }
-        
+
         public DateTime? CompletedUtc { get; set; }
-        
+
+        [Range(0, 23)]
+        public int Hours { get; set; }
+
+        [Range(0, 59)]
+        public int Minutes { get; set; }
         public ICollection<Tag> Tags { get; set; }
     }
 }
