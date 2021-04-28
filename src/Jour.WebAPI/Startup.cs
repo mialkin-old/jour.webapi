@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 using Jour.Database;
+using Jour.WebAPI.Controllers.Telegram;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jour.WebAPI
@@ -61,14 +62,16 @@ namespace Jour.WebAPI
                 });
             }
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson();
 
             services.AddSingleton<IDateTime, MachineClockDateTime>();
+            services.AddSingleton<IWorkoutBotService, WorkoutBotService>();
             services.ConfigureCustomOptions(Configuration);
 
             string? connectionStr = Environment.GetEnvironmentVariable("JOUR_ConnectionString");
             if (string.IsNullOrEmpty(connectionStr))
-                throw new ArgumentNullException(nameof(connectionStr));
+                throw new ArgumentNullException("Connection string must not be empty.", nameof(connectionStr));
 
             services.AddDbContext<JourContext>(x => x
                 .UseNpgsql(connectionStr, y => y.MigrationsAssembly("Jour.Database.Migrations"))
@@ -82,7 +85,7 @@ namespace Jour.WebAPI
                 app.UseDeveloperExceptionPage(); // TODO Do I need this?
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

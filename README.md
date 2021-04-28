@@ -38,7 +38,8 @@ kubectl create secret generic jour-secrets \
 --namespace=mialkin \
 --from-literal=username=YOUR_USERNAME \
 --from-literal=password='YOUR_PASSWORD' \
---from-literal=connectionstring='YOUR_CONNECTION_STRING'
+--from-literal=connection-string='YOUR_CONNECTION_STRING'
+--from-literal=workout-bot-token='WORKOUT_BOT_TOKEN'
 ```
 
 ## Running in Docker
@@ -46,4 +47,12 @@ kubectl create secret generic jour-secrets \
 ```bash
 cd Jour.React
 docker run -d -p 4000:80 --name jour.webapi gcr.io/helical-patrol-307414/jour.webapi
+```
+
+## Set bot webhook
+
+Run this in web browser:
+
+```text
+https://api.telegram.org/bot<YOUR_TOKEN>/setWebhook?url=https://21c8cd2509f4.ngrok.io
 ```

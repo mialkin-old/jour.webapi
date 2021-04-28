@@ -32,11 +32,16 @@ spec:
                 secretKeyRef:
                   name: jour-secrets
                   key: password
+            - name: JOUR_Telegram__WorkoutBotToken
+              valueFrom:
+                secretKeyRef:
+                  name: jour-secrets
+                  key: workout-bot-token
             - name: JOUR_ConnectionString
               valueFrom:
                 secretKeyRef:
                   name: jour-secrets
-                  key: connectionstring
+                  key: connection-string
 ---
 apiVersion: v1
 kind: Service
