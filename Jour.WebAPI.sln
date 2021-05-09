@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Dockerfile = Dockerfile
 		README.md = README.md
 		.gitignore = .gitignore
+		.dockerignore = .dockerignore
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jour.Database", "src\Jour.Database\Jour.Database.csproj", "{8DC7FCD7-DA06-401C-B6F3-066BEF41627B}"
