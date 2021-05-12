@@ -10,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 using Jour.Database;
-using Jour.WebAPI.Controllers.Telegram;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jour.WebAPI
@@ -66,7 +65,6 @@ namespace Jour.WebAPI
                 .AddNewtonsoftJson();
 
             services.AddSingleton<IDateTime, MachineClockDateTime>();
-            services.AddSingleton<IWorkoutBotService, WorkoutBotService>();
             services.ConfigureCustomOptions(Configuration);
 
             string? connectionStr = Environment.GetEnvironmentVariable("JOUR_ConnectionString");
