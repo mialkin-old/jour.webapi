@@ -23,6 +23,7 @@ namespace Jour.WebAPI.Controllers
         }
 
         [Route("status")]
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult Status()
         {

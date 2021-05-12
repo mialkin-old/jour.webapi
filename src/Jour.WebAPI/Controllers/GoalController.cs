@@ -25,15 +25,16 @@ namespace Jour.WebAPI.Controllers
         }
 
         [Route("list")]
+        [HttpGet]
         public async Task<IActionResult> List()
         {
             List<Goal> list = await _context.Goals.ToListAsync();
 
             return Json(list);
         }
-        
-        [HttpPost]
+
         [Route("create")]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] GoalCreateVm model)
         {
             var todo = new Goal
@@ -47,9 +48,9 @@ namespace Jour.WebAPI.Controllers
 
             return SuccessResult();
         }
-        
-        [HttpPost]
+
         [Route("delete")]
+        [HttpPost]
         public async Task<IActionResult> Delete([FromBody] IdVm model)
         {
             Goal goal = await _context.Goals.FirstAsync(x => x.GoalId == model.Id);

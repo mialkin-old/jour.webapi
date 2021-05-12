@@ -5,7 +5,7 @@ namespace Jour.WebAPI.Controllers
 {
     public class AppController : Controller
     {
-        public JsonResult SuccessResult()
+        protected JsonResult SuccessResult()
         {
             return Json(new SuccessResult());
         }

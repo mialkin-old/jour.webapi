@@ -11,6 +11,7 @@ using System;
 using System.Threading.Tasks;
 using Jour.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace Jour.WebAPI
 {
@@ -63,6 +64,11 @@ namespace Jour.WebAPI
 
             services.AddControllers()
                 .AddNewtonsoftJson();
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Jour.WebAPI", Version = "v1"});
+            });
 
             services.AddSingleton<IDateTime, MachineClockDateTime>();
             services.ConfigureCustomOptions(Configuration);
@@ -80,7 +86,9 @@ namespace Jour.WebAPI
         {
             if (Env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage(); // TODO Do I need this?
+                app.UseDeveloperExceptionPage(); 
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Jour.WebAPI v1"));
             }
 
             //app.UseHttpsRedirection();

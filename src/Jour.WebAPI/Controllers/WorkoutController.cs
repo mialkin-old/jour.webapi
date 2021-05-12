@@ -7,6 +7,7 @@ namespace Jour.WebAPI.Controllers
     [Authorize]
     public class WorkoutController : AppController
     {
+        [HttpGet]
         public IActionResult Index()
         {
             return Ok(new {key = "Hello from Jour.WebAPI"});

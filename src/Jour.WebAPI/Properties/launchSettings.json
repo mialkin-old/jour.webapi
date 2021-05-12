@@ -19,7 +19,7 @@
     },
     "Jour.WebAPI": {
       "commandName": "Project",
-      "launchUrl": "api/v1/login/status",
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "JOUR_Login__Username": "aleksei",

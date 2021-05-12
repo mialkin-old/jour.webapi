@@ -26,6 +26,7 @@ namespace Jour.WebAPI.Controllers
         }
 
         [Route("list")]
+        [HttpGet]
         public async Task<IActionResult> List()
         {
             List<Birthday> list = await _context.Birthdays.ToListAsync();
