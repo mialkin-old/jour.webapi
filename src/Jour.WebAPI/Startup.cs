@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 using Jour.Database;
+using Jour.WebAPI.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -65,6 +66,8 @@ namespace Jour.WebAPI
             services.AddControllers()
                 .AddNewtonsoftJson();
             
+            services.AddSignalR();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Jour.WebAPI", Version = "v1"});
@@ -95,6 +98,7 @@ namespace Jour.WebAPI
 
             app.UseRouting();
 
+
             if (Env.IsDevelopment())
             {
                 app.UseCors();
@@ -104,6 +108,10 @@ namespace Jour.WebAPI
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<WorkoutHub>("/chathub");
+            });
         }
     }
 }
