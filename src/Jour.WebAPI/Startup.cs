@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 using Jour.Database;
+using Jour.WebAPI.BackgroundServices;
 using Jour.WebAPI.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -83,6 +84,8 @@ namespace Jour.WebAPI
             services.AddDbContext<JourContext>(x => x
                 .UseNpgsql(connectionStr, y => y.MigrationsAssembly("Jour.Database.Migrations"))
                 .UseSnakeCaseNamingConvention());
+
+            services.AddHostedService<Worker>();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -110,7 +113,7 @@ namespace Jour.WebAPI
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<WorkoutHub>("/chathub");
+                endpoints.MapHub<WorkoutHub>("/workout-hub");
             });
         }
     }
