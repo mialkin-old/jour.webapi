@@ -106,7 +106,6 @@ namespace Jour.WebAPI
 
             app.UseRouting();
 
-
             if (Env.IsDevelopment())
             {
                 app.UseCors();
