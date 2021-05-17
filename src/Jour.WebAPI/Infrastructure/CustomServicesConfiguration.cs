@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Jour.WebAPI.Options;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Jour.WebAPI.Infrastructure
@@ -16,6 +17,10 @@ namespace Jour.WebAPI.Infrastructure
             serviceCollection
                 .AddOptions<TelegramSettings>()
                 .Bind(configuration.GetSection(TelegramSettings.Telegram))
+                .ValidateDataAnnotations();
+            
+            serviceCollection.AddOptions<RabbitOptions>()
+                .Bind(configuration.GetSection(RabbitOptions.Rabbit))
                 .ValidateDataAnnotations();
         }
     }

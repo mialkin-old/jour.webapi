@@ -10,10 +10,11 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 using Jour.Database;
-using Jour.WebAPI.BackgroundServices;
+using Jour.WebAPI.BackgroundServices.Workout;
 using Jour.WebAPI.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using RabbitMQ.Client;
 
 namespace Jour.WebAPI
 {
@@ -85,7 +86,9 @@ namespace Jour.WebAPI
                 .UseNpgsql(connectionStr, y => y.MigrationsAssembly("Jour.Database.Migrations"))
                 .UseSnakeCaseNamingConvention());
 
-            services.AddHostedService<Worker>();
+            services.AddSingleton<ConnectionFactory>();
+            services.AddSingleton<IWorkoutParser, WorkoutParser>();
+            services.AddHostedService<WorkoutRabbitWorker>();
         }
 
         public void Configure(IApplicationBuilder app)
