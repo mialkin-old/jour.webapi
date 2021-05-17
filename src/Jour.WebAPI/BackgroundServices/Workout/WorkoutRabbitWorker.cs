@@ -54,23 +54,37 @@ namespace Jour.WebAPI.BackgroundServices.Workout
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var consumer = new EventingBasicConsumer(_channel);
-            consumer.Received += (model, ea) =>
+            consumer.Received += async (model, ea) =>
             {
-                byte[] body = ea.Body.ToArray();
-                string message = Encoding.UTF8.GetString(body);
-                _logger.LogInformation($"Received {0}, DeliveryTag: {1}", message, ea.DeliveryTag);
-
-                if (_parser.TryParse(message, out var result))
+                try
                 {
-                    // Save to DB and ack
-                    using (var scope = _scopeFactory.CreateScope())
-                    {
-                        IWorkoutRepository workoutRepository =
-                            scope.ServiceProvider.GetRequiredService<IWorkoutRepository>();
-                        workoutRepository.SaveAsync(new Database.Dtos.Workout {WorkoutDateUtc = result.MessageDate});
-                    }
+                    byte[] body = ea.Body.ToArray();
+                    string message = Encoding.UTF8.GetString(body);
+                    _logger.LogInformation($"Received {0}, DeliveryTag: {1}", message, ea.DeliveryTag);
 
-                    _channel.BasicAck(ea.DeliveryTag, false);
+                    if (_parser.TryParse(message, out var result))
+                    {
+                        _logger.LogInformation("Message \"{Message}\" parsed", message);
+                        using (var scope = _scopeFactory.CreateScope())
+                        {
+                            IWorkoutRepository workoutRepository =
+                                scope.ServiceProvider.GetRequiredService<IWorkoutRepository>();
+                            await workoutRepository.SaveAsync(new Database.Dtos.Workout
+                                {WorkoutDateUtc = result.MessageDate});
+                            _logger.LogInformation("Message \"{Message}\" parsed", message);
+                        }
+
+                        _channel.BasicAck(ea.DeliveryTag, false);
+                        _logger.LogInformation("Message \"{Message}\" acknowledged", message);
+                    }
+                    else
+                    {
+                        _logger.LogInformation("Unable to parse message \"{Message}\"", message);
+                    }
+                }
+                catch (Exception e)
+                {
+                    _logger.LogInformation("Exception: {E}", e);
                 }
             };
 
