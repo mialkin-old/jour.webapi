@@ -12,7 +12,7 @@ namespace Jour.Database.Dtos
 
         [Required]
         [Column(TypeName = "date")]
-        public DateTime WorkoutDate { get; set; }
+        public DateTime WorkoutDateUtc { get; set; }
 
         public List<Exercise> Exercises { get; set; }
     }

@@ -2,7 +2,9 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Jour.Database.Repositories;
 using Jour.WebAPI.Options;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -14,12 +16,15 @@ namespace Jour.WebAPI.BackgroundServices.Workout
     public class WorkoutRabbitWorker : BackgroundService
     {
         private readonly IWorkoutParser _parser;
+        private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<WorkoutRabbitWorker> _logger;
         private readonly IModel _channel;
         private const string QueueName = "telegram-workout-received";
 
 
-        public WorkoutRabbitWorker(ConnectionFactory connectionFactory, IOptions<RabbitOptions> rabbitOptions, IWorkoutParser parser,
+        public WorkoutRabbitWorker(ConnectionFactory connectionFactory, IOptions<RabbitOptions> rabbitOptions,
+            IWorkoutParser parser,
+            IServiceScopeFactory scopeFactory,
             ILogger<WorkoutRabbitWorker> logger)
         {
             RabbitOptions options = rabbitOptions.Value;
@@ -29,6 +34,7 @@ namespace Jour.WebAPI.BackgroundServices.Workout
             connectionFactory.Password = options.Password;
 
             _parser = parser;
+            _scopeFactory = scopeFactory;
             _logger = logger;
 
             _logger.LogInformation("Creating connection");
@@ -52,11 +58,18 @@ namespace Jour.WebAPI.BackgroundServices.Workout
             {
                 byte[] body = ea.Body.ToArray();
                 string message = Encoding.UTF8.GetString(body);
-                Console.WriteLine(" [x] Received {0}, DeliveryTag: {1}", message, ea.DeliveryTag);
+                _logger.LogInformation($"Received {0}, DeliveryTag: {1}", message, ea.DeliveryTag);
 
                 if (_parser.TryParse(message, out var result))
                 {
                     // Save to DB and ack
+                    using (var scope = _scopeFactory.CreateScope())
+                    {
+                        IWorkoutRepository workoutRepository =
+                            scope.ServiceProvider.GetRequiredService<IWorkoutRepository>();
+                        workoutRepository.SaveAsync(new Database.Dtos.Workout {WorkoutDateUtc = result.MessageDate});
+                    }
+
                     _channel.BasicAck(ea.DeliveryTag, false);
                 }
             };
@@ -66,8 +79,6 @@ namespace Jour.WebAPI.BackgroundServices.Workout
 
             _channel.BasicConsume(queue: QueueName, autoAck: false, consumer: consumer);
 
-            Console.WriteLine(" Press [enter] to exit.");
-            
             return Task.CompletedTask;
         }
     }

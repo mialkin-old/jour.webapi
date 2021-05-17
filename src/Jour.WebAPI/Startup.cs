@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 using Jour.Database;
+using Jour.Database.Repositories;
 using Jour.WebAPI.BackgroundServices.Workout;
 using Jour.WebAPI.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -85,6 +86,7 @@ namespace Jour.WebAPI
             services.AddDbContext<JourContext>(x => x
                 .UseNpgsql(connectionStr, y => y.MigrationsAssembly("Jour.Database.Migrations"))
                 .UseSnakeCaseNamingConvention());
+            services.AddTransient<IWorkoutRepository, WorkoutRepository>();
 
             services.AddSingleton<ConnectionFactory>();
             services.AddSingleton<IWorkoutParser, WorkoutParser>();
