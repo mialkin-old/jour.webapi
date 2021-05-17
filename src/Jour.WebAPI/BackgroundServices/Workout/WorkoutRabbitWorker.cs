@@ -51,14 +51,14 @@ namespace Jour.WebAPI.BackgroundServices.Workout
 
             _channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false,
                 arguments: null);
-            
+
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += ConsumerOnReceived;
             consumer.ConsumerCancelled += (sender, eventArgs) => Console.WriteLine("Consumer canceled");
             consumer.Shutdown += (sender, eventArgs) => Console.WriteLine("Shutdown");
 
             _channel.BasicConsume(queue: QueueName, autoAck: false, consumer: consumer);
-            
+
             return Task.CompletedTask;
         }
 
@@ -70,7 +70,8 @@ namespace Jour.WebAPI.BackgroundServices.Workout
                 string message = Encoding.UTF8.GetString(body);
                 _logger.LogInformation($"Received {0}, DeliveryTag: {1}", message, ea.DeliveryTag);
 
-                if (_parser.TryParse(message, out var result))
+                WorkoutMessage? result = await _parser.Parse(message);
+                if (result != null)
                 {
                     _logger.LogInformation("Message \"{Message}\" parsed", message);
                     using (var scope = _scopeFactory.CreateScope())

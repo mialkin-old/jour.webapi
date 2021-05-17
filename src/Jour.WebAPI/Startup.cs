@@ -86,6 +86,7 @@ namespace Jour.WebAPI
             services.AddDbContext<JourContext>(x => x
                 .UseNpgsql(connectionStr, y => y.MigrationsAssembly("Jour.Database.Migrations"))
                 .UseSnakeCaseNamingConvention());
+            services.AddTransient<IExerciseRepository, ExerciseRepository>();
             services.AddTransient<IWorkoutRepository, WorkoutRepository>();
 
             services.AddSingleton<ConnectionFactory>();
