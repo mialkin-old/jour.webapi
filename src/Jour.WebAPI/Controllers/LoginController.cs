@@ -13,7 +13,7 @@ namespace Jour.WebAPI.Controllers
 {
     [Route("api/v1/[controller]")]
     [Authorize]
-    public class LoginController : Controller
+    public class LoginController : AppController
     {
         private readonly LoginSettings _loginSettings;
 

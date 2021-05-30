@@ -10,6 +10,7 @@ namespace Jour.Database
         }
 
         public DbSet<Birthday> Birthdays { get; set; }
+        public DbSet<Book> Books { get; set; }
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Goal> Goals { get; set; }
         public DbSet<Tag> Tags { get; set; }
